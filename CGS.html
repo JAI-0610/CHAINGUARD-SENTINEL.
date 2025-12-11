@@ -1,0 +1,3615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChainGuard Sentinel | AI Security for Social Media & Communication Apps</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* STAR DOCK FONT */
+        @font-face {
+            font-family: 'Star Dock';
+            src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+            font-weight: 400 900;
+            font-style: normal;
+        }
+        
+        :root {
+            --primary: #1a73e8;
+            --secondary: #0f3057;
+            --accent: #00c896;
+            --accent-dark: #00a078;
+            --dark: #0a1929;
+            --darker: #071220;
+            --light: #f8f9fa;
+            --lighter: #e6f7ff;
+            --danger: #ff6b6b;
+            --success: #4cc9f0;
+            --blockchain: #8a2be2;
+            --gold: #ffd700;
+            --silver: #c0c0c0;
+            --bronze: #cd7f32;
+            --whatsapp: #25D366;
+            --instagram: #E4405F;
+            --facebook: #1877F2;
+            --twitter: #1DA1F2;
+            --telegram: #0088CC;
+            --discord: #5865F2;
+            --gmail: #EA4335;
+            --linkedin: #0A66C2;
+            --snapchat: #FFFC00;
+            --googlechat: #00AC47;
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Star Dock', 'Orbitron', sans-serif;
+            background: linear-gradient(135deg, var(--darker) 0%, var(--dark) 100%);
+            color: var(--light);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+            font-weight: 400;
+        }
+        
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(37, 211, 102, 0.07) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(228, 64, 95, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, rgba(79, 209, 197, 0.03) 0%, transparent 40%);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        .social-grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(90deg, transparent 79%, rgba(37, 211, 102, 0.03) 80%),
+                linear-gradient(0deg, transparent 79%, rgba(228, 64, 95, 0.03) 80%);
+            background-size: 60px 60px;
+            z-index: -2;
+            opacity: 0.5;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Header Styles */
+        header {
+            background: rgba(10, 25, 41, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(37, 211, 102, 0.3);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            animation: slideDown 0.5s ease;
+        }
+        
+        @keyframes slideDown {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(0); }
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+        }
+        
+        .logo-icon {
+            background: var(--accent);
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(0, 200, 150, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px rgba(0, 200, 150, 0.5); }
+            50% { box-shadow: 0 0 25px rgba(0, 200, 150, 0.8); }
+            100% { box-shadow: 0 0 15px rgba(0, 200, 150, 0.5); }
+        }
+        
+        .logo-icon i {
+            font-size: 22px;
+            color: var(--dark);
+        }
+        
+        .logo-text {
+            font-size: 22px;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            padding: 5px 0;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: var(--accent);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .auth-btn {
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .signin-btn {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+        
+        .signin-btn:hover {
+            background: rgba(0, 200, 150, 0.1);
+        }
+        
+        .signup-btn {
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            color: var(--darker);
+            font-weight: 700;
+        }
+        
+        .signup-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 200, 150, 0.4);
+        }
+        
+        /* Smooth scrolling */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        section {
+            scroll-margin-top: 100px;
+        }
+        
+        /* Page Structure */
+        .page {
+            display: none;
+            padding: 140px 0 60px;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.6s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 120px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 1px;
+            font-weight: 800;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #c2e4ff;
+            max-width: 90%;
+            font-weight: 300;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .hero-tagline {
+            display: inline-block;
+            background: rgba(37, 211, 102, 0.15);
+            color: var(--accent);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            margin-bottom: 25px;
+            border: 1px solid var(--whatsapp);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            animation: fadeInUp 1.2s ease;
+        }
+        
+        .btn {
+            padding: 14px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            display: inline-block;
+            text-align: center;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            color: var(--darker);
+            box-shadow: 0 5px 20px rgba(0, 200, 150, 0.4);
+            font-weight: 700;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 200, 150, 0.6);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+            border: 2px solid var(--accent);
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(0, 200, 150, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .hero-visual {
+            position: relative;
+            height: 500px;
+            perspective: 1000px;
+        }
+        
+        .social-grid-container {
+            position: relative;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .social-grid-line {
+            position: absolute;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, transparent, var(--whatsapp), transparent);
+            opacity: 0.3;
+        }
+        
+        .social-grid-line:nth-child(1) { top: 20%; }
+        .social-grid-line:nth-child(2) { top: 40%; }
+        .social-grid-line:nth-child(3) { top: 60%; }
+        .social-grid-line:nth-child(4) { top: 80%; }
+        
+        .platform {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: rgba(10, 25, 41, 0.8);
+            border: 2px solid;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            backdrop-filter: blur(5px);
+            transform-style: preserve-3d;
+            transition: var(--transition);
+            z-index: 1;
+        }
+        
+        .platform-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .platform-title {
+            font-size: 0.9rem;
+            text-align: center;
+            color: var(--light);
+            font-weight: 600;
+        }
+        
+        .whatsapp { border-color: var(--whatsapp); box-shadow: 0 0 20px rgba(37, 211, 102, 0.3); }
+        .whatsapp .platform-icon { color: var(--whatsapp); }
+        
+        .instagram { border-color: var(--instagram); box-shadow: 0 0 20px rgba(228, 64, 95, 0.3); }
+        .instagram .platform-icon { color: var(--instagram); }
+        
+        .facebook { border-color: var(--facebook); box-shadow: 0 0 20px rgba(24, 119, 242, 0.3); }
+        .facebook .platform-icon { color: var(--facebook); }
+        
+        .twitter { border-color: var(--twitter); box-shadow: 0 0 20px rgba(29, 161, 242, 0.3); }
+        .twitter .platform-icon { color: var(--twitter); }
+        
+        .platform-1 {
+            top: 10%;
+            left: 10%;
+            animation: float 6s infinite ease-in-out;
+            z-index: 4;
+        }
+        
+        .platform-2 {
+            top: 30%;
+            left: 70%;
+            animation: float 8s infinite ease-in-out;
+            z-index: 3;
+        }
+        
+        .platform-3 {
+            top: 60%;
+            left: 20%;
+            animation: float 7s infinite ease-in-out;
+            z-index: 2;
+        }
+        
+        .platform-4 {
+            top: 50%;
+            left: 50%;
+            animation: float 9s infinite ease-in-out;
+            z-index: 1;
+        }
+        
+        .platform:hover {
+            transform: translateY(-10px) rotateY(10deg);
+            box-shadow: 0 0 30px rgba(37, 211, 102, 0.6);
+            z-index: 10;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+        
+        /* Social Media Section */
+        .section {
+            padding: 100px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+            position: relative;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            letter-spacing: 1px;
+            font-weight: 800;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 4px;
+            background: var(--accent);
+            margin: 15px auto 0;
+            border-radius: 2px;
+            animation: growLine 1s ease;
+        }
+        
+        @keyframes growLine {
+            0% { width: 0; }
+            100% { width: 80px; }
+        }
+        
+        /* Social Media Features Section */
+        .social-features-section {
+            background: linear-gradient(135deg, rgba(10, 25, 41, 0.8) 0%, rgba(15, 48, 87, 0.8) 100%);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .social-features-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(37, 211, 102, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(228, 64, 95, 0.05) 0%, transparent 40%);
+            z-index: -1;
+        }
+        
+        .social-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background: rgba(15, 48, 87, 0.6);
+            border-radius: 15px;
+            padding: 30px;
+            transition: var(--transition);
+            border: 1px solid rgba(37, 211, 102, 0.2);
+            backdrop-filter: blur(10px);
+            transform: translateY(30px);
+            opacity: 0;
+            animation: cardAppear 0.6s forwards;
+        }
+        
+        .feature-card:nth-child(1) { animation-delay: 0.2s; }
+        .feature-card:nth-child(2) { animation-delay: 0.4s; }
+        .feature-card:nth-child(3) { animation-delay: 0.6s; }
+        .feature-card:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes cardAppear {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border-color: var(--accent);
+        }
+        
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(37, 211, 102, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            transition: var(--transition);
+        }
+        
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+        
+        .feature-icon i {
+            font-size: 30px;
+            color: var(--whatsapp);
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .feature-card p {
+            color: #a3c5e0;
+        }
+        
+        /* Social Media Process Section */
+        .social-process-section {
+            background: linear-gradient(135deg, rgba(10, 25, 41, 0.8) 0%, rgba(15, 48, 87, 0.8) 100%);
+            padding: 100px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .process-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+        }
+        
+        .process-steps {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            max-width: 1000px;
+            position: relative;
+        }
+        
+        .process-step {
+            flex: 1;
+            min-width: 250px;
+            max-width: 300px;
+            text-align: center;
+            position: relative;
+            padding: 30px 20px;
+            background: rgba(15, 48, 87, 0.4);
+            border-radius: 15px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            backdrop-filter: blur(10px);
+            transform: translateY(30px);
+            opacity: 0;
+            animation: stepAppear 0.6s forwards;
+        }
+        
+        .process-step:nth-child(1) { animation-delay: 0.2s; }
+        .process-step:nth-child(2) { animation-delay: 0.4s; }
+        .process-step:nth-child(3) { animation-delay: 0.6s; }
+        .process-step:nth-child(4) { animation-delay: 0.8s; }
+        
+        @keyframes stepAppear {
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .step-number {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            background: var(--accent);
+            color: var(--dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(0, 200, 150, 0.5);
+            animation: pulse 2s infinite;
+        }
+        
+        .step-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+            color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        .process-step:hover .step-icon {
+            transform: rotate(15deg);
+        }
+        
+        .process-step h3 {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .process-step p {
+            color: #c2e4ff;
+        }
+        
+        .step-connector {
+            position: absolute;
+            top: 50%;
+            right: -40px;
+            width: 40px;
+            height: 2px;
+            background: var(--accent);
+        }
+        
+        @media (max-width: 900px) {
+            .step-connector {
+                display: none;
+            }
+        }
+        
+        /* Subscription Plans */
+        .pricing-section {
+            background: linear-gradient(135deg, rgba(10, 25, 41, 0.8) 0%, rgba(15, 48, 87, 0.8) 100%);
+            padding: 120px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pricing-section::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(37, 211, 102, 0.05) 0%, transparent 40%);
+            z-index: -1;
+        }
+        
+        .plans-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            height: 500px;
+        }
+        
+        .plan-card {
+            background: rgba(15, 48, 87, 0.6);
+            border-radius: 15px;
+            padding: 40px 30px;
+            text-align: center;
+            transition: var(--transition);
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            backdrop-filter: blur(10px);
+            position: absolute;
+            width: 300px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            z-index: 1;
+            transform-origin: center bottom;
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-20px) scale(1.05);
+            z-index: 10;
+            box-shadow: 0 15px 40px rgba(0, 200, 150, 0.3);
+        }
+        
+        .plan-card.popular {
+            transform: scale(1.1);
+            z-index: 5;
+            border: 2px solid var(--accent);
+            box-shadow: 0 0 30px rgba(0, 200, 150, 0.5);
+            animation: pulsePlan 3s infinite;
+        }
+        
+        @keyframes pulsePlan {
+            0% { box-shadow: 0 0 30px rgba(0, 200, 150, 0.5); }
+            50% { box-shadow: 0 0 45px rgba(0, 200, 150, 0.8); }
+            100% { box-shadow: 0 0 30px rgba(0, 200, 150, 0.5); }
+        }
+        
+        .plan-card.popular:hover {
+            transform: scale(1.12);
+            animation: none;
+        }
+        
+        .plan-card:nth-child(1) {
+            left: 10%;
+            transform: rotate(-5deg);
+            top: 50px;
+            animation: float-card-1 8s infinite ease-in-out;
+        }
+        
+        .plan-card:nth-child(2) {
+            left: 30%;
+            transform: rotate(2deg);
+            top: 30px;
+            animation: float-card-2 7s infinite ease-in-out;
+        }
+        
+        .plan-card:nth-child(3) {
+            left: 50%;
+            transform: rotate(-3deg);
+            top: 50px;
+            animation: float-card-3 9s infinite ease-in-out;
+        }
+        
+        .plan-card:nth-child(4) {
+            left: 70%;
+            transform: rotate(4deg);
+            top: 40px;
+            animation: float-card-4 6s infinite ease-in-out;
+        }
+        
+        @keyframes float-card-1 {
+            0% { transform: rotate(-5deg) translateY(0); }
+            50% { transform: rotate(-5deg) translateY(-20px); }
+            100% { transform: rotate(-5deg) translateY(0); }
+        }
+        
+        @keyframes float-card-2 {
+            0% { transform: rotate(2deg) translateY(0); }
+            50% { transform: rotate(2deg) translateY(-25px); }
+            100% { transform: rotate(2deg) translateY(0); }
+        }
+        
+        @keyframes float-card-3 {
+            0% { transform: rotate(-3deg) translateY(0); }
+            50% { transform: rotate(-3deg) translateY(-30px); }
+            100% { transform: rotate(-3deg) translateY(0); }
+        }
+        
+        @keyframes float-card-4 {
+            0% { transform: rotate(4deg) translateY(0); }
+            50% { transform: rotate(4deg) translateY(-15px); }
+            100% { transform: rotate(4deg) translateY(0); }
+        }
+        
+        .plan-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        .plan-card:hover .plan-icon {
+            transform: rotate(15deg);
+        }
+        
+        .plan-name {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+        
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: var(--light);
+            font-family: 'Star Dock', 'Orbitron', sans-serif;
+            font-weight: 800;
+        }
+        
+        .plan-price span {
+            font-size: 1rem;
+            color: var(--accent);
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+        
+        .plan-features li {
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(37, 211, 102, 0.2);
+            color: #c2e4ff;
+        }
+        
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+        
+        .plan-features li i {
+            color: var(--accent);
+            margin-right: 10px;
+        }
+        
+        .plan-btn {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            border-radius: 50px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            color: var(--darker);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .plan-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 200, 150, 0.3);
+        }
+        
+        .popular-plan .plan-btn {
+            background: linear-gradient(90deg, var(--gold), #ffcc00);
+            color: var(--darker);
+        }
+        
+        .plan-description {
+            margin-top: 20px;
+            color: #a3c5e0;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        /* Demo Section */
+        .demo-section {
+            background: linear-gradient(135deg, rgba(10, 25, 41, 0.9) 0%, rgba(15, 48, 87, 0.9) 100%);
+            text-align: center;
+            padding: 100px 0;
+        }
+        
+        .demo-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(15, 48, 87, 0.4);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .demo-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: progress 15s infinite linear;
+        }
+        
+        @keyframes progress {
+            0% { transform: scaleX(0); }
+            100% { transform: scaleX(1); }
+        }
+        
+        .dashboard {
+            background: rgba(10, 25, 41, 0.8);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(37, 211, 102, 0.3);
+        }
+        
+        .dashboard-title {
+            font-size: 1.4rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .dashboard-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stat {
+            background: rgba(37, 211, 102, 0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .stat.secure {
+            color: var(--accent);
+            border: 1px solid var(--accent);
+        }
+        
+        .stat.threat {
+            color: var(--danger);
+            border: 1px solid var(--danger);
+        }
+        
+        .dashboard-content {
+            display: flex;
+            gap: 20px;
+            height: 300px;
+            flex-wrap: wrap;
+        }
+        
+        .activity-panel {
+            flex: 1;
+            background: rgba(15, 48, 87, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            overflow-y: auto;
+            min-width: 300px;
+        }
+        
+        .activity-item {
+            padding: 10px;
+            border-bottom: 1px solid rgba(37, 211, 102, 0.1);
+            display: flex;
+            gap: 10px;
+            transition: var(--transition);
+        }
+        
+        .activity-item:hover {
+            background: rgba(37, 211, 102, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .activity-icon {
+            min-width: 30px;
+            height: 30px;
+            background: rgba(76, 201, 240, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: pulse 2s infinite;
+        }
+        
+        .activity-icon i {
+            font-size: 14px;
+            color: var(--success);
+        }
+        
+        .activity-threat i {
+            color: var(--danger);
+        }
+        
+        .activity-info {
+            flex: 1;
+        }
+        
+        .activity-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+        
+        .activity-time {
+            font-size: 0.8rem;
+            color: #8ca6c0;
+        }
+        
+        .activity-threat .activity-title {
+            color: var(--danger);
+        }
+        
+        .visualization {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            min-width: 300px;
+        }
+        
+        .graph {
+            flex: 1;
+            background: rgba(15, 48, 87, 0.3);
+            border-radius: 10px;
+            padding: 15px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .graph-title {
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .graph-placeholder {
+            flex: 1;
+            background: linear-gradient(90deg, transparent 49%, rgba(37, 211, 102, 0.05) 50%), 
+                        linear-gradient(0deg, transparent 49%, rgba(37, 211, 102, 0.05) 50%);
+            background-size: 20px 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .graph-line {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background: linear-gradient(to top, var(--accent), transparent);
+            clip-path: polygon(0% 100%, 10% 85%, 20% 70%, 30% 65%, 40% 40%, 50% 35%, 60% 50%, 70% 45%, 80% 30%, 90% 20%, 100% 100%);
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        /* Footer */
+        footer {
+            background: rgba(10, 25, 41, 0.95);
+            padding: 60px 0 30px;
+            border-top: 1px solid rgba(37, 211, 102, 0.3);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .footer-info p {
+            color: #a3c5e0;
+            margin-bottom: 20px;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(37, 211, 102, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent);
+            transition: var(--transition);
+        }
+        
+        .social-links a:hover {
+            background: var(--accent);
+            color: var(--dark);
+            transform: translateY(-5px);
+        }
+        
+        .footer-title {
+            font-size: 1.3rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: #a3c5e0;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+            padding-left: 5px;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(37, 211, 102, 0.2);
+            color: #8ca6c0;
+            font-size: 0.9rem;
+        }
+        
+        /* Detailed Pages */
+        .page-header {
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .page-header h1 {
+            font-size: 3rem;
+            background: linear-gradient(90deg, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            font-weight: 800;
+            animation: fadeInUp 0.6s ease;
+        }
+        
+        .page-header p {
+            color: #a3c5e0;
+            font-size: 1.2rem;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .content-section {
+            background: rgba(15, 48, 87, 0.6);
+            border-radius: 15px;
+            padding: 40px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            backdrop-filter: blur(10px);
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .content-section h2 {
+            font-size: 2rem;
+            color: var(--accent);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(37, 211, 102, 0.3);
+        }
+        
+        .content-section h3 {
+            font-size: 1.5rem;
+            color: var(--success);
+            margin: 25px 0 15px;
+        }
+        
+        .content-section p {
+            color: #c2e4ff;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+        
+        .content-section ul {
+            padding-left: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .content-section li {
+            color: #c2e4ff;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        
+        .content-section li strong {
+            color: var(--accent);
+        }
+        
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 25px;
+            background: rgba(37, 211, 102, 0.2);
+            color: var(--accent);
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .back-btn:hover {
+            background: rgba(37, 211, 102, 0.3);
+            transform: translateX(-5px);
+        }
+        
+        /* Auth Pages */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 70vh;
+        }
+        
+        .auth-box {
+            background: rgba(15, 48, 87, 0.6);
+            border-radius: 15px;
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .auth-header h2 {
+            font-size: 2.2rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+        
+        .auth-header p {
+            color: #a3c5e0;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #a3c5e0;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            background: rgba(10, 25, 41, 0.5);
+            color: white;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.2);
+        }
+        
+        .auth-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            color: var(--darker);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+        }
+        
+        .auth-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 200, 150, 0.4);
+        }
+        
+        .auth-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: #a3c5e0;
+        }
+        
+        .auth-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .auth-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        .remember-forgot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .remember {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .remember input {
+            accent-color: var(--accent);
+        }
+        
+        .forgot-password {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .hero-content {
+                text-align: center;
+            }
+            
+            .hero-content p {
+                max-width: 100%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .cta-buttons {
+                justify-content: center;
+            }
+            
+            .hero-visual {
+                height: 350px;
+            }
+            
+            .plans-container {
+                height: auto;
+                flex-direction: column;
+                align-items: center;
+                gap: 50px;
+            }
+            
+            .plan-card {
+                position: relative;
+                width: 90%;
+                max-width: 400px;
+                margin-bottom: 30px;
+                transform: none !important;
+                animation: none !important;
+                left: auto !important;
+                top: auto !important;
+            }
+            
+            .plan-card.popular {
+                transform: scale(1.05) !important;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .auth-buttons {
+                display: none;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.8rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .page-header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content-section {
+                padding: 25px;
+            }
+            
+            .auth-box {
+                padding: 30px 20px;
+            }
+        }
+        
+        /* New styles for Scan functionality */
+        .scan-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: rgba(15, 48, 87, 0.6);
+            border-radius: 15px;
+            padding: 40px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .scan-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .scan-header h2 {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+        
+        .scan-header p {
+            color: #a3c5e0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .scan-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+        
+        .scan-form input {
+            flex: 1;
+            padding: 16px 20px;
+            border-radius: 10px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            background: rgba(10, 25, 41, 0.5);
+            color: white;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+        
+        .scan-form input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(0, 200, 150, 0.2);
+        }
+        
+        .scan-btn {
+            padding: 16px 40px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            color: var(--darker);
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .scan-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 200, 150, 0.4);
+        }
+        
+        .scan-results {
+            display: none;
+            background: rgba(10, 25, 41, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            margin-top: 30px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(37, 211, 102, 0.3);
+        }
+        
+        .results-title {
+            font-size: 1.6rem;
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .status-badge {
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .status-secure {
+            background: rgba(0, 200, 150, 0.15);
+            color: var(--accent);
+        }
+        
+        .status-vulnerable {
+            background: rgba(255, 107, 107, 0.15);
+            color: var(--danger);
+        }
+        
+        .threat-list {
+            list-style: none;
+        }
+        
+        .threat-item {
+            background: rgba(15, 48, 87, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--danger);
+            animation: fadeIn 0.6s ease;
+        }
+        
+        .threat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .threat-title {
+            font-size: 1.2rem;
+            color: var(--danger);
+            font-weight: 600;
+        }
+        
+        .threat-severity {
+            padding: 5px 15px;
+            border-radius: 20px;
+            background: rgba(255, 107, 107, 0.2);
+            color: var(--danger);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+        
+        .threat-description {
+            color: #c2e4ff;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .threat-fix {
+            background: rgba(0, 200, 150, 0.1);
+            border-left: 4px solid var(--accent);
+            padding: 15px;
+            border-radius: 0 8px 8px 0;
+            margin-top: 10px;
+        }
+        
+        .threat-fix h4 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .threat-fix p {
+            color: #a3c5e0;
+            margin-bottom: 0;
+        }
+        
+        .scan-history {
+            margin-top: 50px;
+        }
+        
+        .history-title {
+            font-size: 1.8rem;
+            color: var(--accent);
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(37, 211, 102, 0.3);
+        }
+        
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(15, 48, 87, 0.4);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .history-table th {
+            background: rgba(37, 211, 102, 0.2);
+            padding: 15px;
+            text-align: left;
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .history-table td {
+            padding: 15px;
+            border-bottom: 1px solid rgba(37, 211, 102, 0.1);
+            color: #c2e4ff;
+        }
+        
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .history-table tr:hover {
+            background: rgba(37, 211, 102, 0.1);
+            transform: translateX(5px);
+            transition: transform 0.3s ease;
+        }
+        
+        .scan-status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .status-completed {
+            background: rgba(0, 200, 150, 0.15);
+            color: var(--accent);
+        }
+        
+        .status-failed {
+            background: rgba(255, 107, 107, 0.15);
+            color: var(--danger);
+        }
+        
+        .notification-center {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            z-index: 2000;
+            max-width: 350px;
+            width: 100%;
+        }
+        
+        .notification {
+            background: rgba(15, 48, 87, 0.95);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 5px solid var(--danger);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            transform: translateX(400px);
+            transition: transform 0.4s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+        
+        .notification.show {
+            transform: translateX(0);
+            opacity: 1;
+            animation: slideInRight 0.5s ease;
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(400px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .notification-icon {
+            font-size: 24px;
+            color: var(--danger);
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-size: 1.1rem;
+            color: var(--danger);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .notification-message {
+            color: #c2e4ff;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .notification-close {
+            color: #8ca6c0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        
+        .notification-close:hover {
+            color: var(--accent);
+        }
+        
+        .notification-badge {
+            display: inline-block;
+            background: var(--danger);
+            color: var(--darker);
+            font-size: 0.7rem;
+            font-weight: 700;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 20px;
+            margin-left: 5px;
+            vertical-align: super;
+            animation: pulse 2s infinite;
+        }
+        
+        /* Animation for scan in progress */
+        @keyframes scanning {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .scanning-animation {
+            height: 5px;
+            background: linear-gradient(90deg, var(--darker), var(--accent), var(--darker));
+            background-size: 200% 200%;
+            border-radius: 5px;
+            animation: scanning 2s linear infinite;
+            margin: 30px 0;
+        }
+        
+        /* Detailed progress bar */
+        .progress-container {
+            width: 100%;
+            background: rgba(10, 25, 41, 0.5);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-stages {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #8ca6c0;
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .scan-form {
+                flex-direction: column;
+            }
+            
+            .scan-btn {
+                width: 100%;
+            }
+            
+            .results-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .history-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+        
+        /* Risk Meter */
+        .risk-meter {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .meter-bar {
+            flex: 1;
+            height: 12px;
+            background: linear-gradient(to right, var(--accent), #ffcc00, var(--danger));
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .meter-pointer {
+            position: absolute;
+            top: -5px;
+            width: 3px;
+            height: 22px;
+            background: white;
+            transform: translateX(-50%);
+            transition: left 1s ease;
+        }
+        
+        .meter-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 5px;
+            font-size: 0.8rem;
+            color: #8ca6c0;
+        }
+        
+        .risk-value {
+            font-weight: 700;
+            font-size: 1.2rem;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        .risk-low { color: var(--accent); }
+        .risk-medium { color: #ffcc00; }
+        .risk-high { color: var(--danger); }
+        
+        /* AI Chatbot Styles */
+        .chatbot-container {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 2000;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .chatbot-toggle {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--darker);
+            font-size: 28px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 200, 150, 0.4);
+            animation: none;
+        }
+        
+        .chatbot-window {
+            width: 380px;
+            height: 500px;
+            background: rgba(10, 25, 41, 0.95);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            backdrop-filter: blur(10px);
+            transform: translateY(20px) scale(0.9);
+            opacity: 0;
+            transition: all 0.4s ease;
+            position: absolute;
+            bottom: 90px;
+            right: 0;
+            pointer-events: none;
+        }
+        
+        .chatbot-window.active {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .chat-header {
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            padding: 20px;
+            color: var(--darker);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+        }
+        
+        .chat-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            margin: 0;
+        }
+        
+        .chat-close {
+            background: none;
+            border: none;
+            color: var(--darker);
+            font-size: 20px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .chat-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .message {
+            max-width: 80%;
+            padding: 15px;
+            border-radius: 18px;
+            position: relative;
+            animation: messageAppear 0.3s ease;
+        }
+        
+        @keyframes messageAppear {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .user-message {
+            background: rgba(37, 211, 102, 0.3);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .bot-message {
+            background: rgba(15, 48, 87, 0.6);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .bot-message:before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: -10px;
+            width: 0;
+            height: 0;
+            border: 5px solid transparent;
+            border-top-color: rgba(15, 48, 87, 0.6);
+            border-bottom: 0;
+            border-left: 0;
+        }
+        
+        .user-message:before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: -10px;
+            width: 0;
+            height: 0;
+            border: 5px solid transparent;
+            border-top-color: rgba(37, 211, 102, 0.3);
+            border-bottom: 0;
+            border-right: 0;
+        }
+        
+        .message-content {
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        
+        .suggestion {
+            background: rgba(76, 201, 240, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 10px;
+            padding: 10px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            animation: pulseSuggestion 2s infinite;
+        }
+        
+        @keyframes pulseSuggestion {
+            0% { box-shadow: 0 0 0 rgba(76, 201, 240, 0.1); }
+            50% { box-shadow: 0 0 10px rgba(76, 201, 240, 0.3); }
+            100% { box-shadow: 0 0 0 rgba(76, 201, 240, 0.1); }
+        }
+        
+        .suggestion:hover {
+            background: rgba(76, 201, 240, 0.2);
+        }
+        
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: rgba(15, 48, 87, 0.6);
+            border-top: 1px solid rgba(37, 211, 102, 0.3);
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border-radius: 30px;
+            border: 1px solid rgba(37, 211, 102, 0.3);
+            background: rgba(10, 25, 41, 0.5);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+        }
+        
+        .chat-input input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .chat-input button {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--accent);
+            color: var(--darker);
+            border: none;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-input button:hover {
+            transform: rotate(15deg);
+            background: var(--accent-dark);
+            box-shadow: 0 5px 15px rgba(0, 200, 150, 0.3);
+        }
+        
+        .typing-indicator {
+            display: none;
+            padding: 10px 15px;
+            background: rgba(15, 48, 87, 0.6);
+            border-radius: 18px;
+            align-self: flex-start;
+            margin-top: 5px;
+        }
+        
+        .typing-indicator span {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--accent);
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: typing 1.4s infinite;
+        }
+        
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes typing {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0); }
+        }
+        
+        .chatbot-tag {
+            position: absolute;
+            top: -15px;
+            right: 10px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+            color: var(--darker);
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+            animation: pulse 2s infinite;
+        }
+        
+        /* Keyframes for fadeInUp */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Mobile menu styles */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--accent);
+            font-size: 24px;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .nav-links {
+                position: fixed;
+                top: 85px;
+                left: 0;
+                width: 100%;
+                background: rgba(10, 25, 41, 0.98);
+                flex-direction: column;
+                padding: 20px;
+                gap: 15px;
+                transform: translateY(-100%);
+                transition: transform 0.3s ease;
+                z-index: 999;
+                border-bottom: 2px solid var(--accent);
+            }
+            
+            .nav-links.active {
+                transform: translateY(0);
+            }
+            
+            .auth-buttons {
+                position: fixed;
+                bottom: 20px;
+                left: 0;
+                width: 100%;
+                justify-content: center;
+                padding: 0 20px;
+                z-index: 999;
+                display: flex !important;
+            }
+        }
+        
+        /* Auth pages */
+        .auth-page {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+        
+        /* Enhanced styles for mobile menu */
+        .mobile-auth-buttons {
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .mobile-auth-buttons {
+                display: flex;
+                gap: 10px;
+                margin-top: 20px;
+            }
+            
+            .mobile-auth-buttons .auth-btn {
+                padding: 8px 15px;
+                font-size: 0.9rem;
+            }
+        }
+        
+        /* Platform icons */
+        .platform-icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .platform-icon-small {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+        
+        .platform-icon-small:hover {
+            transform: translateY(-5px);
+        }
+        
+        .whatsapp-icon { background-color: var(--whatsapp); }
+        .instagram-icon { background-color: var(--instagram); }
+        .facebook-icon { background-color: var(--facebook); }
+        .twitter-icon { background-color: var(--twitter); }
+        .telegram-icon { background-color: var(--telegram); }
+        .discord-icon { background-color: var(--discord); }
+        .gmail-icon { background-color: var(--gmail); }
+        .linkedin-icon { background-color: var(--linkedin); }
+        .snapchat-icon { background-color: var(--snapchat); color: #000; }
+        .googlechat-icon { background-color: var(--googlechat); }
+        .sms-icon { background-color: #34B7F1; }
+    </style>
+</head>
+<body>
+    <div class="social-grid-bg"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo" id="homeLink">
+                    <div class="logo-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="logo-text">ChainGuard Sentinel</div>
+                </div>
+                <button class="mobile-menu-btn" id="mobileMenuBtn">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <nav class="nav-links" id="navLinks">
+                    <a href="#social" class="nav-link">Social Protection</a>
+                    <a href="#process" class="nav-link">Process</a>
+                    <a href="#features" class="nav-link">Features</a>
+                    <a href="#pricing" class="nav-link">Pricing</a>
+                    <a href="#demo" class="nav-link">Demo</a>
+                    <a href="#" id="scanLink">Scan Profiles <span id="notificationBadge" class="notification-badge">3</span></a>
+                    <div class="mobile-auth-buttons">
+                        <a href="#" class="auth-btn signin-btn" id="mobileSigninLink">Sign In</a>
+                        <a href="#" class="auth-btn signup-btn" id="mobileSignupLink">Sign Up</a>
+                    </div>
+                </nav>
+                <div class="auth-buttons">
+                    <a href="#" class="auth-btn signin-btn" id="signinLink">Sign In</a>
+                    <a href="#" class="auth-btn signup-btn" id="signupLink">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Notification Center -->
+    <div class="notification-center" id="notificationCenter"></div>
+
+    <!-- Pages -->
+    <main>
+        <!-- Home Page -->
+        <div id="homePage" class="page active">
+            <!-- Hero Section -->
+            <section class="hero">
+                <div class="container">
+                    <div class="hero-grid">
+                        <div class="hero-content">
+                            <div class="hero-tagline">
+                                <i class="fas fa-link"></i> AI-Powered Social Media Security
+                            </div>
+                            <h1>Comprehensive Protection for Digital Presence</h1>
+                            <p>ChainGuard Sentinel is a decentralized, ML-driven security agent that continuously monitors WhatsApp, Instagram, Snapchat, Discord, Telegram, SMS, Facebook, X (Twitter), Gmail, LinkedIn, and Google Chat for vulnerabilities and attacks. Predict threats before they happen and autonomously deploy countermeasures.</p>
+                            <div class="platform-icons">
+                                <div class="platform-icon-small whatsapp-icon"><i class="fab fa-whatsapp"></i></div>
+                                <div class="platform-icon-small instagram-icon"><i class="fab fa-instagram"></i></div>
+                                <div class="platform-icon-small facebook-icon"><i class="fab fa-facebook"></i></div>
+                                <div class="platform-icon-small twitter-icon"><i class="fab fa-twitter"></i></div>
+                                <div class="platform-icon-small telegram-icon"><i class="fab fa-telegram"></i></div>
+                                <div class="platform-icon-small discord-icon"><i class="fab fa-discord"></i></div>
+                                <div class="platform-icon-small gmail-icon"><i class="fas fa-envelope"></i></div>
+                                <div class="platform-icon-small linkedin-icon"><i class="fab fa-linkedin"></i></div>
+                                <div class="platform-icon-small snapchat-icon"><i class="fab fa-snapchat"></i></div>
+                                <div class="platform-icon-small googlechat-icon"><i class="fas fa-comments"></i></div>
+                                <div class="platform-icon-small sms-icon"><i class="fas fa-sms"></i></div>
+                            </div>
+                            <div class="cta-buttons">
+                                <a href="#pricing" class="btn btn-primary">View Pricing Plans</a>
+                                <a href="#demo" class="btn btn-secondary">View Demo</a>
+                            </div>
+                        </div>
+                        <div class="hero-visual">
+                            <div class="social-grid-container">
+                                <div class="social-grid-line"></div>
+                                <div class="social-grid-line"></div>
+                                <div class="social-grid-line"></div>
+                                <div class="social-grid-line"></div>
+                                
+                                <div class="platform platform-1 whatsapp">
+                                    <div class="platform-icon"><i class="fab fa-whatsapp"></i></div>
+                                    <div class="platform-title">WhatsApp Security</div>
+                                </div>
+                                <div class="platform platform-2 instagram">
+                                    <div class="platform-icon"><i class="fab fa-instagram"></i></div>
+                                    <div class="platform-title">Instagram Protection</div>
+                                </div>
+                                <div class="platform platform-3 facebook">
+                                    <div class="platform-icon"><i class="fab fa-facebook"></i></div>
+                                    <div class="platform-title">Facebook Safety</div>
+                                </div>
+                                <div class="platform platform-4 twitter">
+                                    <div class="platform-icon"><i class="fab fa-twitter"></i></div>
+                                    <div class="platform-title">X (Twitter) Security</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Social Media Section -->
+            <section id="social" class="section social-features-section">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Social Media Security Advantages</h2>
+                    </div>
+                    <div class="social-features">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3>Account Takeover Prevention</h3>
+                            <p>Advanced AI detects unauthorized access attempts across all connected platforms and automatically locks suspicious activity before damage occurs.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-fingerprint"></i>
+                            </div>
+                            <h3>Impersonation Detection</h3>
+                            <p>Identifies fake accounts pretending to be you across social platforms and automatically reports them with evidence to platform administrators.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-bolt"></i>
+                            </div>
+                            <h3>Real-Time Phishing Protection</h3>
+                            <p>Scans messages, emails, and posts for phishing links in real-time across WhatsApp, Telegram, Gmail, and other communication platforms.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3>AI Content Monitoring</h3>
+                            <p>Machine learning models analyze posts, comments, and messages for harmful content, harassment, and brand reputation risks.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Social Media Process Section -->
+            <section id="process" class="section social-process-section">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>How Our Social Media Security Works</h2>
+                    </div>
+                    <div class="process-container">
+                        <div class="process-steps">
+                            <div class="process-step">
+                                <div class="step-number">1</div>
+                                <div class="step-icon"><i class="fas fa-search"></i></div>
+                                <h3>Continuous Monitoring</h3>
+                                <p>AI agents monitor your social media accounts, emails, and messaging platforms 24/7 for suspicious activities and threats.</p>
+                            </div>
+                            
+                            <div class="process-step">
+                                <div class="step-number">2</div>
+                                <div class="step-icon"><i class="fas fa-brain"></i></div>
+                                <h3>AI Threat Analysis</h3>
+                                <p>Machine learning algorithms analyze patterns to predict account breaches, phishing attempts, and social engineering attacks.</p>
+                            </div>
+                            
+                            <div class="process-step">
+                                <div class="step-number">3</div>
+                                <div class="step-icon"><i class="fas fa-shield-alt"></i></div>
+                                <h3>Cross-Platform Correlation</h3>
+                                <p>Correlates threats across multiple platforms to identify sophisticated attacks targeting you through different channels.</p>
+                            </div>
+                            
+                            <div class="process-step">
+                                <div class="step-number">4</div>
+                                <div class="step-icon"><i class="fas fa-bolt"></i></div>
+                                <h3>Automated Defense</h3>
+                                <p>Automatically deploys countermeasures like account lockouts, content removal, and phishing link blocking across platforms.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Features Section -->
+            <section id="features" class="section">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Advanced Security Features</h2>
+                    </div>
+                    <div class="social-features">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3>Multi-Platform AI Protection</h3>
+                            <p>Unified security across 11 major platforms with specialized AI models trained for each platform's unique threat landscape.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <h3>Real-Time Threat Response</h3>
+                            <p>Automatically responds to threats within seconds, from phishing link blocking to account recovery procedures.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-project-diagram"></i>
+                            </div>
+                            <h3>Cross-Platform Attack Detection</h3>
+                            <p>Identifies coordinated attacks across multiple platforms targeting the same individual or organization.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-code-branch"></i>
+                            </div>
+                            <h3>Privacy Compliance Monitoring</h3>
+                            <p>Ensures your social media activities comply with privacy regulations like GDPR, CCPA across all platforms.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pricing Section -->
+            <section id="pricing" class="section pricing-section">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Subscription Plans</h2>
+                        <p style="color: #a3c5e0; max-width: 800px; margin: 20px auto 0; font-size: 1.1rem;">Choose the perfect plan for your security needs. All plans include our advanced AI-powered threat detection and automated response system for social media and communication platforms.</p>
+                    </div>
+                    <div class="plans-container">
+                        <!-- Basic Plan -->
+                        <div class="plan-card" data-plan="basic">
+                            <div class="plan-icon">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <h3 class="plan-name">Basic</h3>
+                            <div class="plan-price">₹699 <span>/month</span></div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> 3 Social Accounts Protected</li>
+                                <li><i class="fas fa-check"></i> Real-time Threat Monitoring</li>
+                                <li><i class="fas fa-check"></i> Basic AI Threat Detection</li>
+                                <li><i class="fas fa-check"></i> Email & SMS Alerts</li>
+                                <li><i class="fas fa-check"></i> Daily Security Reports</li>
+                            </ul>
+                            <button class="plan-btn">Get Started</button>
+                            <div class="plan-description">
+                                Perfect for individuals needing essential protection for their key social accounts.
+                            </div>
+                        </div>
+                        
+                        <!-- Professional Plan -->
+                        <div class="plan-card popular popular-plan" data-plan="professional">
+                            <div class="plan-icon">
+                                <i class="fas fa-briefcase"></i>
+                            </div>
+                            <h3 class="plan-name">Professional</h3>
+                            <div class="plan-price">₹1,999 <span>/3 months</span></div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> 10 Social Accounts Protected</li>
+                                <li><i class="fas fa-check"></i> Advanced AI Threat Detection</li>
+                                <li><i class="fas fa-check"></i> Real-time Countermeasures</li>
+                                <li><i class="fas fa-check"></i> Multi-Platform Alerts</li>
+                                <li><i class="fas fa-check"></i> Weekly Security Audits</li>
+                                <li><i class="fas fa-check"></i> Priority Support</li>
+                            </ul>
+                            <button class="plan-btn">Get Started</button>
+                            <div class="plan-description">
+                                Ideal for professionals and small businesses requiring comprehensive social media security.
+                            </div>
+                        </div>
+                        
+                        <!-- Business Plan -->
+                        <div class="plan-card" data-plan="business">
+                            <div class="plan-icon">
+                                <i class="fas fa-building"></i>
+                            </div>
+                            <h3 class="plan-name">Business</h3>
+                            <div class="plan-price">₹3,899 <span>/6 months</span></div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> 25 Social Accounts Protected</li>
+                                <li><i class="fas fa-check"></i> Enterprise AI Threat Detection</li>
+                                <li><i class="fas fa-check"></i> Automated Response System</li>
+                                <li><i class="fas fa-check"></i> 24/7 Monitoring & Alerts</li>
+                                <li><i class="fas fa-check"></i> Brand Reputation Monitoring</li>
+                                <li><i class="fas fa-check"></i> Dedicated Account Manager</li>
+                            </ul>
+                            <button class="plan-btn">Get Started</button>
+                            <div class="plan-description">
+                                For businesses with multiple social media accounts needing enterprise-grade protection.
+                            </div>
+                        </div>
+                        
+                        <!-- Enterprise Plan -->
+                        <div class="plan-card" data-plan="enterprise">
+                            <div class="plan-icon">
+                                <i class="fas fa-chess-king"></i>
+                            </div>
+                            <h3 class="plan-name">Enterprise</h3>
+                            <div class="plan-price">₹7,699 <span>/year</span></div>
+                            <ul class="plan-features">
+                                <li><i class="fas fa-check"></i> 50+ Social Accounts Protected</li>
+                                <li><i class="fas fa-check"></i> Premium AI Threat Detection</li>
+                                <li><i class="fas fa-check"></i> Custom Security Protocols</li>
+                                <li><i class="fas fa-check"></i> Cross-Platform Attack Analysis</li>
+                                <li><i class="fas fa-check"></i> 24/7 Premium Support</li>
+                                <li><i class="fas fa-check"></i> Compliance Reporting</li>
+                            </ul>
+                            <button class="plan-btn">Get Started</button>
+                            <div class="plan-description">
+                                Comprehensive solution for enterprises with complex social media security requirements.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Demo Section -->
+            <section id="demo" class="section demo-section">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Social Media Security Dashboard</h2>
+                    </div>
+                    <div class="demo-container">
+                        <p style="margin-bottom: 30px; color: #c2e4ff; max-width: 700px; margin-left: auto; margin-right: auto;">
+                            Experience ChainGuard Sentinel in action. Our live demo shows AI-based threat detection and automated response capabilities protecting social media and communication accounts across multiple platforms.
+                        </p>
+                        <div class="dashboard">
+                            <div class="dashboard-header">
+                                <div class="dashboard-title">Multi-Platform Social Media Security Monitor</div>
+                                <div class="dashboard-stats">
+                                    <div class="stat secure"><i class="fas fa-check-circle"></i> 8 Accounts Secured</div>
+                                    <div class="stat threat"><i class="fas fa-exclamation-triangle"></i> <span id="activeThreats">3</span> Active Threats</div>
+                                </div>
+                            </div>
+                            <div class="dashboard-content">
+                                <div class="activity-panel">
+                                    <div class="activity-item">
+                                        <div class="activity-icon"><i class="fab fa-instagram"></i></div>
+                                        <div class="activity-info">
+                                            <div class="activity-title">Suspicious login attempt detected on Instagram</div>
+                                            <div class="activity-time">Just now</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item activity-threat">
+                                        <div class="activity-icon"><i class="fab fa-whatsapp"></i></div>
+                                        <div class="activity-info">
+                                            <div class="activity-title">Phishing link detected in WhatsApp message</div>
+                                            <div class="activity-time">30 seconds ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon"><i class="fas fa-shield-alt"></i></div>
+                                        <div class="activity-info">
+                                            <div class="activity-title">Countermeasure deployed: Link blocked</div>
+                                            <div class="activity-time">45 seconds ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon"><i class="fab fa-twitter"></i></div>
+                                        <div class="activity-info">
+                                            <div class="activity-title">Impersonation account detected on Twitter</div>
+                                            <div class="activity-time">1 minute ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon"><i class="fas fa-envelope"></i></div>
+                                        <div class="activity-info">
+                                            <div class="activity-title">Suspicious email flagged in Gmail</div>
+                                            <div class="activity-time">2 minutes ago</div>
+                                        </div>
+                                    </div>
+                                    <div class="activity-item">
+                                        <div class="activity-icon"><i class="fab fa-facebook"></i></div>
+                                        <div class="activity-info">
+                                            <div class="activity-title">Account security settings optimized for Facebook</div>
+                                            <div class="activity-time">5 minutes ago</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="visualization">
+                                    <div class="graph">
+                                        <div class="graph-title">Threat Detection Timeline (Last 24h)</div>
+                                        <div class="graph-placeholder">
+                                            <div class="graph-line"></div>
+                                        </div>
+                                    </div>
+                                    <div class="graph">
+                                        <div class="graph-title">Platform Threat Distribution</div>
+                                        <div class="graph-placeholder" style="display: flex; align-items: flex-end; justify-content: space-around; padding: 0 20px;">
+                                            <div style="width: 30px; background: var(--whatsapp); height: 80%;"></div>
+                                            <div style="width: 30px; background: var(--instagram); height: 65%;"></div>
+                                            <div style="width: 30px; background: var(--facebook); height: 90%;"></div>
+                                            <div style="width: 30px; background: var(--twitter); height: 75%;"></div>
+                                            <div style="width: 30px; background: var(--gmail); height: 85%;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" style="margin-top: 20px;" id="simulateAttackBtn">
+                            <i class="fas fa-play-circle"></i> Simulate Social Media Attack
+                        </button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        
+        <!-- Scan Page -->
+        <div id="scanPage" class="page">
+            <div class="container">
+                <a href="#" class="back-btn" id="scanBack">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <div class="page-header">
+                    <h1>Scan Social Media Profiles</h1>
+                    <p>Analyze the security of any social media or communication account for vulnerabilities and threats</p>
+                </div>
+                
+                <div class="scan-container">
+                    <div class="scan-header">
+                        <h2>Advanced Social Media Security Scanner</h2>
+                        <p>Enter the profile URL or username of a social media account to perform a comprehensive security scan. Our AI-powered system will analyze the account for vulnerabilities and provide actionable recommendations.</p>
+                    </div>
+                    
+                    <div class="platform-icons" style="margin: 30px 0;">
+                        <div class="platform-icon-small whatsapp-icon" data-platform="whatsapp"><i class="fab fa-whatsapp"></i></div>
+                        <div class="platform-icon-small instagram-icon" data-platform="instagram"><i class="fab fa-instagram"></i></div>
+                        <div class="platform-icon-small facebook-icon" data-platform="facebook"><i class="fab fa-facebook"></i></div>
+                        <div class="platform-icon-small twitter-icon" data-platform="twitter"><i class="fab fa-twitter"></i></div>
+                        <div class="platform-icon-small telegram-icon" data-platform="telegram"><i class="fab fa-telegram"></i></div>
+                        <div class="platform-icon-small discord-icon" data-platform="discord"><i class="fab fa-discord"></i></div>
+                        <div class="platform-icon-small gmail-icon" data-platform="gmail"><i class="fas fa-envelope"></i></div>
+                        <div class="platform-icon-small linkedin-icon" data-platform="linkedin"><i class="fab fa-linkedin"></i></div>
+                    </div>
+                    
+                    <div class="scan-form">
+                        <input type="text" id="dappInput" placeholder="Enter social media profile URL or username (e.g. https://instagram.com/username)" value="https://instagram.com/testprofile">
+                        <button class="scan-btn" id="scanBtn">
+                            <i class="fas fa-search"></i> Scan Now
+                        </button>
+                    </div>
+                    
+                    <div id="scanProgress" class="scanning-animation" style="display: none;"></div>
+                    
+                    <div class="progress-container" id="progressBar" style="display: none;">
+                        <div class="progress-bar" id="progressFill"></div>
+                    </div>
+                    
+                    <div class="progress-stages" id="progressStages" style="display: none;">
+                        <span>Connecting</span>
+                        <span>Profile Analysis</span>
+                        <span>Threat Detection</span>
+                        <span>Finalizing</span>
+                    </div>
+                    
+                    <div class="scan-results" id="scanResults">
+                        <div class="results-header">
+                            <div class="results-title">Scan Results for: <span id="scannedDapp">Instagram Profile</span></div>
+                            <div class="status-badge status-vulnerable" id="statusBadge">Vulnerabilities Found</div>
+                        </div>
+                        
+                        <div class="risk-meter">
+                            <div class="risk-value risk-high" id="riskValue">High Risk</div>
+                            <div class="meter-bar">
+                                <div class="meter-pointer" id="riskPointer" style="left: 90%;"></div>
+                            </div>
+                            <div class="meter-labels">
+                                <span>Low</span>
+                                <span>Medium</span>
+                                <span>High</span>
+                            </div>
+                        </div>
+                        
+                        <ul class="threat-list" id="threatList">
+                            <!-- Threats will be populated here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sign In Page -->
+        <div id="signinPage" class="page">
+            <div class="container">
+                <a href="#" class="back-btn" id="signinBack">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <div class="auth-page">
+                    <div class="auth-box">
+                        <div class="auth-header">
+                            <h2>Sign In</h2>
+                            <p>Welcome back to ChainGuard Sentinel</p>
+                        </div>
+                        <form id="signinForm">
+                            <div class="form-group">
+                                <label for="email">Email Address</label>
+                                <input type="email" id="email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" placeholder="Enter your password" required>
+                            </div>
+                            <div class="remember-forgot">
+                                <div class="remember">
+                                    <input type="checkbox" id="remember">
+                                    <label for="remember">Remember me</label>
+                                </div>
+                                <a href="#" class="forgot-password">Forgot Password?</a>
+                            </div>
+                            <button type="submit" class="auth-btn">Sign In</button>
+                        </form>
+                        <div class="auth-footer">
+                            <p>Don't have an account? <a href="#" id="gotoSignup">Sign Up</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sign Up Page -->
+        <div id="signupPage" class="page">
+            <div class="container">
+                <a href="#" class="back-btn" id="signupBack">
+                    <i class="fas fa-arrow-left"></i> Back to Home
+                </a>
+                <div class="auth-page">
+                    <div class="auth-box">
+                        <div class="auth-header">
+                            <h2>Create Account</h2>
+                            <p>Join ChainGuard Sentinel to secure your social media accounts</p>
+                        </div>
+                        <form id="signupForm">
+                            <div class="form-group">
+                                <label for="signup-name">Full Name</label>
+                                <input type="text" id="signup-name" placeholder="Enter your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-email">Email Address</label>
+                                <input type="email" id="signup-email" placeholder="Enter your email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-password">Password</label>
+                                <input type="password" id="signup-password" placeholder="Create a password" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="signup-confirm">Confirm Password</label>
+                                <input type="password" id="signup-confirm" placeholder="Confirm your password" required>
+                            </div>
+                            <button type="submit" class="auth-btn">Create Account</button>
+                        </form>
+                        <div class="auth-footer">
+                            <p>Already have an account? <a href="#" id="gotoSignin">Sign In</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <div class="footer-logo">ChainGuard Sentinel</div>
+                    <div class="footer-info">
+                        <p>Autonomous AI defense for your digital presence. Protecting social media and communication platforms from emerging threats with AI-powered security.</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-whatsapp"></i></a>
+                            <a href="#"><i class="fab fa-instagram"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fab fa-linkedin"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Supported Platforms</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">WhatsApp Security</a></li>
+                        <li><a href="#">Instagram Protection</a></li>
+                        <li><a href="#">Facebook Safety</a></li>
+                        <li><a href="#">X (Twitter) Security</a></li>
+                        <li><a href="#">Telegram Monitoring</a></li>
+                        <li><a href="#">Gmail Protection</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Developers</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">API Documentation</a></li>
+                        <li><a href="#">Integration Guide</a></li>
+                        <li><a href="#">GitHub Repository</a></li>
+                        <li><a href="#">Security Audits</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3 class="footer-title">Contact</h3>
+                    <ul class="footer-links">
+                        <li><i class="fas fa-envelope"></i> security@chainguard.com</li>
+                        <li><i class="fab fa-telegram-plane"></i> t.me/chainguard_support</li>
+                        <li><i class="fas fa-phone-alt"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Digital Security Hub, Bangalore, India</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2025 ChainGuard Sentinel. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- AI Chatbot -->
+    <div class="chatbot-container">
+        <div class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-robot"></i>
+            <div class="chatbot-tag">AI Assistant</div>
+        </div>
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chat-header">
+                <h3><i class="fas fa-shield-alt"></i> ChainGuard AI Assistant</h3>
+                <button class="chat-close" id="chatClose">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <div class="message bot-message">
+                    <div class="message-content">
+                        Hello! I'm the ChainGuard AI assistant. How can I help you with social media security today?
+                        <div class="suggestion" data-message="Tell me about ChainGuard Sentinel">
+                            <i class="fas fa-lightbulb"></i> Tell me about ChainGuard Sentinel
+                        </div>
+                        <div class="suggestion" data-message="How do I secure my Instagram account?">
+                            <i class="fas fa-lightbulb"></i> How do I secure my Instagram account?
+                        </div>
+                        <div class="suggestion" data-message="What threats can you detect on WhatsApp?">
+                            <i class="fas fa-lightbulb"></i> What threats can you detect on WhatsApp?
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Ask about social media security...">
+                <button id="sendMessage">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            <div class="typing-indicator" id="typingIndicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Page Navigation System
+        const pages = {
+            home: document.getElementById('homePage'),
+            scan: document.getElementById('scanPage'),
+            signin: document.getElementById('signinPage'),
+            signup: document.getElementById('signupPage')
+        };
+        
+        // Navigation links
+        const navLinks = {
+            home: document.getElementById('homeLink'),
+            social: document.querySelector('a[href="#social"]'),
+            process: document.querySelector('a[href="#process"]'),
+            features: document.querySelector('a[href="#features"]'),
+            pricing: document.querySelector('a[href="#pricing"]'),
+            demo: document.querySelector('a[href="#demo"]'),
+            scan: document.getElementById('scanLink'),
+            signin: document.getElementById('signinLink'),
+            signup: document.getElementById('signupLink'),
+            mobileSignin: document.getElementById('mobileSigninLink'),
+            mobileSignup: document.getElementById('mobileSignupLink')
+        };
+        
+        // Back buttons
+        const backButtons = {
+            scan: document.getElementById('scanBack'),
+            signin: document.getElementById('signinBack'),
+            signup: document.getElementById('signupBack')
+        };
+        
+        // Auth navigation
+        const gotoSignup = document.getElementById('gotoSignup');
+        const gotoSignin = document.getElementById('gotoSignin');
+        
+        // Mobile menu
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinksContainer = document.getElementById('navLinks');
+        
+        // Form elements
+        const signinForm = document.getElementById('signinForm');
+        const signupForm = document.getElementById('signupForm');
+        
+        // Function to show a specific page
+        function showPage(pageToShow) {
+            // Hide all pages
+            Object.values(pages).forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the requested page
+            pages[pageToShow].classList.add('active');
+            
+            // Close mobile menu if open
+            navLinksContainer.classList.remove('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+        
+        // Function to scroll to a section on the home page
+        function scrollToSection(sectionId) {
+            if (pages.home.classList.contains('active')) {
+                // If we're already on the home page, just scroll to the section
+                const section = document.getElementById(sectionId);
+                if (section) {
+                    section.scrollIntoView({ behavior: 'smooth' });
+                }
+            } else {
+                // If we're not on the home page, switch to it first then scroll
+                showPage('home');
+                // Wait for the page to show then scroll
+                setTimeout(() => {
+                    const section = document.getElementById(sectionId);
+                    if (section) {
+                        section.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 100);
+            }
+        }
+        
+        // Set up event listeners for navigation
+        navLinks.home.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('home');
+        });
+        
+        navLinks.scan.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('scan');
+        });
+        
+        navLinks.signin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('signin');
+        });
+        
+        navLinks.signup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('signup');
+        });
+        
+        navLinks.mobileSignin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('signin');
+            navLinksContainer.classList.remove('active');
+        });
+        
+        navLinks.mobileSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('signup');
+            navLinksContainer.classList.remove('active');
+        });
+        
+        // Set up event listeners for section links
+        navLinks.social.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollToSection('social');
+            navLinksContainer.classList.remove('active');
+        });
+        
+        navLinks.process.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollToSection('process');
+            navLinksContainer.classList.remove('active');
+        });
+        
+        navLinks.features.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollToSection('features');
+            navLinksContainer.classList.remove('active');
+        });
+        
+        navLinks.pricing.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollToSection('pricing');
+            navLinksContainer.classList.remove('active');
+        });
+        
+        navLinks.demo.addEventListener('click', (e) => {
+            e.preventDefault();
+            scrollToSection('demo');
+            navLinksContainer.classList.remove('active');
+        });
+        
+        // Back buttons
+        backButtons.scan.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('home');
+        });
+        
+        backButtons.signin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('home');
+        });
+        
+        backButtons.signup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('home');
+        });
+        
+        // Auth navigation
+        gotoSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('signup');
+        });
+        
+        gotoSignin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('signin');
+        });
+        
+        // Mobile menu toggle
+        mobileMenuBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navLinksContainer.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinksContainer.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                navLinksContainer.classList.remove('active');
+            }
+        });
+        
+        // Form submission handling
+        signinForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            showNotification("Sign In Successful", "Welcome back to ChainGuard Sentinel!");
+            showPage('home');
+        });
+        
+        signupForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Check if passwords match
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm').value;
+            
+            if (password !== confirmPassword) {
+                showNotification("Sign Up Error", "Passwords do not match. Please try again.");
+                return;
+            }
+            
+            showNotification("Account Created", "Welcome to ChainGuard Sentinel! Your account has been created successfully.");
+            showPage('home');
+        });
+        
+        // Simulate an attack
+        document.getElementById('simulateAttackBtn').addEventListener('click', function() {
+            const threats = [
+                "Simulated phishing attack on WhatsApp detected",
+                "Countermeasure deployed: Suspicious link blocked",
+                "Impersonation account detected on Instagram",
+                "Account recovery initiated for compromised profile"
+            ];
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < threats.length) {
+                    showNotification("Attack Simulation", threats[i]);
+                    i++;
+                } else {
+                    clearInterval(interval);
+                }
+            }, 2000);
+        });
+        
+        // Notification system
+        const notificationCenter = document.getElementById('notificationCenter');
+        const notificationBadge = document.getElementById('notificationBadge');
+        let notificationCount = 3;
+        
+        function showNotification(title, message) {
+            notificationCount++;
+            notificationBadge.textContent = notificationCount;
+            
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.innerHTML = `
+                <div class="notification-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">${title}</div>
+                    <div class="notification-message">${message}</div>
+                </div>
+                <div class="notification-close">
+                    <i class="fas fa-times"></i>
+                </div>
+            `;
+            
+            notificationCenter.appendChild(notification);
+            
+            // Show notification
+            setTimeout(() => {
+                notification.classList.add('show');
+            }, 100);
+            
+            // Auto remove notification after 5 seconds
+            const removeTimeout = setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 5000);
+            
+            // Close button functionality
+            notification.querySelector('.notification-close').addEventListener('click', () => {
+                clearTimeout(removeTimeout);
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            });
+        }
+        
+        // Scan functionality
+        const scanBtn = document.getElementById('scanBtn');
+        const dappInput = document.getElementById('dappInput');
+        const scanProgress = document.getElementById('scanProgress');
+        const scanResults = document.getElementById('scanResults');
+        const scannedDapp = document.getElementById('scannedDapp');
+        const statusBadge = document.getElementById('statusBadge');
+        const threatList = document.getElementById('threatList');
+        const progressBar = document.getElementById('progressBar');
+        const progressFill = document.getElementById('progressFill');
+        const progressStages = document.getElementById('progressStages');
+        const riskPointer = document.getElementById('riskPointer');
+        const riskValue = document.getElementById('riskValue');
+        
+        // Social media specific threats
+        const socialThreats = [
+            {
+                title: "Account Impersonation Detected",
+                severity: "Critical",
+                description: "Multiple fake accounts are impersonating this profile across different platforms. These accounts are being used for phishing and social engineering attacks.",
+                fix: "Enable two-factor authentication on all platforms. Report impersonating accounts to platform administrators. Consider using a verified badge where available."
+            },
+            {
+                title: "Excessive Personal Data Exposure",
+                severity: "High",
+                description: "The profile contains excessive personal information (phone number, address, birth date) that could be used for identity theft or targeted attacks.",
+                fix: "Review and adjust privacy settings. Remove sensitive personal information from public profiles. Use platform-specific privacy controls to limit who can see your information."
+            },
+            {
+                title: "Phishing Links in Bio/Posts",
+                severity: "High",
+                description: "Suspicious links detected in profile bio or recent posts that match known phishing patterns. These could compromise visitors' accounts.",
+                fix: "Immediately remove suspicious links from your profile and posts. Use URL scanners before clicking on any links. Educate followers about phishing threats."
+            },
+            {
+                title: "Weak Password Security",
+                severity: "Medium",
+                description: "The account appears to use weak or reused passwords based on pattern analysis across platforms. This increases vulnerability to credential stuffing attacks.",
+                fix: "Use a password manager to generate and store unique, strong passwords for each platform. Enable two-factor authentication wherever possible."
+            },
+            {
+                title: "Location Tracking Enabled",
+                severity: "Medium",
+                description: "Location services are enabled on multiple platforms, exposing real-time location data that could be used for physical security threats.",
+                fix: "Disable location sharing on social media platforms. Review location history and delete unnecessary data. Use location services only when necessary."
+            }
+        ];
+        
+        // Platform icons click event
+        document.querySelectorAll('.platform-icon-small').forEach(icon => {
+            icon.addEventListener('click', function() {
+                const platform = this.dataset.platform;
+                const platformNames = {
+                    whatsapp: "WhatsApp Profile",
+                    instagram: "Instagram Profile",
+                    facebook: "Facebook Profile",
+                    twitter: "X (Twitter) Profile",
+                    telegram: "Telegram Profile",
+                    discord: "Discord Profile",
+                    gmail: "Gmail Account",
+                    linkedin: "LinkedIn Profile"
+                };
+                
+                dappInput.value = `https://${platform}.com/testprofile`;
+                dappInput.focus();
+                
+                showNotification("Platform Selected", `Now scanning ${platformNames[platform] || platform}`);
+            });
+        });
+        
+        // Scan dApp function
+        function scanDApp() {
+            const dappValue = dappInput.value.trim();
+            
+            if (!dappValue) {
+                showNotification("Scan Error", "Please enter a social media profile URL or username");
+                return;
+            }
+            
+            // Show scanning progress
+            scanProgress.style.display = 'block';
+            progressBar.style.display = 'block';
+            progressStages.style.display = 'flex';
+            scanResults.style.display = 'none';
+            progressFill.style.width = '0%';
+            
+            // Extract dApp name from input
+            let dappName = 'Social Media Profile';
+            
+            if (dappValue.includes('instagram.com')) {
+                dappName = 'Instagram Profile';
+            } else if (dappValue.includes('facebook.com')) {
+                dappName = 'Facebook Profile';
+            } else if (dappValue.includes('twitter.com') || dappValue.includes('x.com')) {
+                dappName = 'X (Twitter) Profile';
+            } else if (dappValue.includes('linkedin.com')) {
+                dappName = 'LinkedIn Profile';
+            } else if (dappValue.includes('t.me') || dappValue.includes('telegram.me')) {
+                dappName = 'Telegram Profile';
+            } else if (dappValue.includes('discord.com')) {
+                dappName = 'Discord Profile';
+            } else if (dappValue.includes('whatsapp.com')) {
+                dappName = 'WhatsApp Profile';
+            }
+            
+            scannedDapp.textContent = dappName;
+            
+            // Simulate scanning process
+            const stages = [
+                {name: "Connecting to platform API", progress: 10},
+                {name: "Downloading profile data", progress: 25},
+                {name: "Analyzing privacy settings", progress: 40},
+                {name: "Checking for impersonation", progress: 60},
+                {name: "AI threat prediction", progress: 80},
+                {name: "Generating security report", progress: 100}
+            ];
+            
+            let currentStage = 0;
+            
+            function updateProgress() {
+                if (currentStage < stages.length) {
+                    const stage = stages[currentStage];
+                    progressFill.style.width = stage.progress + '%';
+                    
+                    // Highlight current stage
+                    const stageElements = progressStages.querySelectorAll('span');
+                    stageElements.forEach((el, index) => {
+                        if (index === currentStage) {
+                            el.style.color = "var(--accent)";
+                            el.style.fontWeight = "700";
+                        } else {
+                            el.style.color = "";
+                            el.style.fontWeight = "";
+                        }
+                    });
+                    
+                    currentStage++;
+                    setTimeout(updateProgress, 600 + Math.random() * 600);
+                } else {
+                    // Hide progress bar
+                    scanProgress.style.display = 'none';
+                    
+                    // Show results
+                    scanResults.style.display = 'block';
+                    
+                    // Determine if we should show threats or not (20% chance of no threats)
+                    const hasThreats = Math.random() > 0.2;
+                    const threatCount = 1 + Math.floor(Math.random() * 3);
+                    const threats = hasThreats ? 
+                        [...socialThreats].sort(() => 0.5 - Math.random()).slice(0, threatCount) : 
+                        [];
+                    
+                    renderThreats(threats);
+                    
+                    // Show notification if threats were found
+                    if (threats.length > 0) {
+                        const threatTitles = threats.map(t => t.title).join(', ');
+                        showNotification(
+                            `Threats Found in ${dappName}`,
+                            `Scan detected ${threats.length} security issues: ${threatTitles}`
+                        );
+                    } else {
+                        showNotification(
+                            `Scan Complete: ${dappName} is Secure`,
+                            "No critical vulnerabilities were found in this profile."
+                        );
+                    }
+                }
+            }
+            
+            updateProgress();
+        }
+        
+        // Render threats
+        function renderThreats(threats) {
+            threatList.innerHTML = '';
+            
+            if (threats.length === 0) {
+                threatList.innerHTML = '<li class="threat-item" style="border-left-color: var(--accent);">' +
+                    '<div class="threat-header">' +
+                    '<div class="threat-title">No Threats Detected</div>' +
+                    '</div>' +
+                    '<div class="threat-description">The profile passed all security checks with no critical vulnerabilities found.</div>' +
+                    '</li>';
+                statusBadge.className = 'status-badge status-secure';
+                statusBadge.textContent = 'Secure';
+                riskPointer.style.left = '10%';
+                riskValue.textContent = "Low Risk";
+                riskValue.className = "risk-value risk-low";
+                return;
+            }
+            
+            threats.forEach(threat => {
+                const threatItem = document.createElement('li');
+                threatItem.className = 'threat-item';
+                
+                threatItem.innerHTML = `
+                    <div class="threat-header">
+                        <div class="threat-title">${threat.title}</div>
+                        <div class="threat-severity">${threat.severity}</div>
+                    </div>
+                    <div class="threat-description">${threat.description}</div>
+                    <div class="threat-fix">
+                        <h4>Recommended Fix:</h4>
+                        <p>${threat.fix}</p>
+                    </div>
+                `;
+                
+                threatList.appendChild(threatItem);
+            });
+            
+            statusBadge.className = 'status-badge status-vulnerable';
+            statusBadge.textContent = threats.length + ' Threat' + (threats.length > 1 ? 's' : '') + ' Found';
+            
+            // Set risk level based on threats
+            const criticalCount = threats.filter(t => t.severity === 'Critical').length;
+            const highCount = threats.filter(t => t.severity === 'High').length;
+            
+            if (criticalCount > 0) {
+                riskPointer.style.left = '90%';
+                riskValue.textContent = "Critical Risk";
+                riskValue.className = "risk-value risk-high";
+            } else if (highCount > 0) {
+                riskPointer.style.left = '70%';
+                riskValue.textContent = "High Risk";
+                riskValue.className = "risk-value risk-high";
+            } else if (threats.length > 0) {
+                riskPointer.style.left = '50%';
+                riskValue.textContent = "Medium Risk";
+                riskValue.className = "risk-value risk-medium";
+            }
+        }
+        
+        // Event listener for scan button
+        scanBtn.addEventListener('click', scanDApp);
+        
+        // AI Chatbot Functionality
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatClose = document.getElementById('chatClose');
+        const chatMessages = document.getElementById('chatMessages');
+        const chatInput = document.getElementById('chatInput');
+        const sendMessage = document.getElementById('sendMessage');
+        const typingIndicator = document.getElementById('typingIndicator');
+        const suggestions = document.querySelectorAll('.suggestion');
+        
+        // Toggle chatbot window
+        chatbotToggle.addEventListener('click', () => {
+            chatbotWindow.classList.toggle('active');
+        });
+        
+        // Close chatbot window
+        chatClose.addEventListener('click', () => {
+            chatbotWindow.classList.remove('active');
+        });
+        
+        // Close chatbot when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!chatbotWindow.contains(e.target) && !chatbotToggle.contains(e.target)) {
+                chatbotWindow.classList.remove('active');
+            }
+        });
+        
+        // Send message function
+        function sendChatMessage(message, isUser = true) {
+            const messageElement = document.createElement('div');
+            messageElement.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageElement.innerHTML = `<div class="message-content">${message}</div>`;
+            
+            chatMessages.appendChild(messageElement);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // AI response simulation
+        function simulateAIResponse(message) {
+            // Show typing indicator
+            typingIndicator.style.display = 'flex';
+            
+            // Hide typing indicator after delay
+            setTimeout(() => {
+                typingIndicator.style.display = 'none';
+                
+                // Generate response
+                let response = "I'm sorry, I didn't understand that. Could you rephrase your question about social media security?";
+                
+                if (message.toLowerCase().includes('hello') || message.toLowerCase().includes('hi')) {
+                    response = "Hello! How can I assist you with social media security today?";
+                } else if (message.toLowerCase().includes('what') && message.toLowerCase().includes('chainguard')) {
+                    response = "ChainGuard Sentinel is an AI-powered security platform for social media and communication apps. We protect WhatsApp, Instagram, Facebook, Twitter, Telegram, and other platforms from threats like account takeover, phishing, and impersonation.";
+                } else if (message.toLowerCase().includes('how') && message.toLowerCase().includes('secure') && message.toLowerCase().includes('instagram')) {
+                    response = "To secure your Instagram account:<br>1. Enable two-factor authentication<br>2. Make your account private<br>3. Review tagged posts before they appear<br>4. Don't share sensitive personal information<br>5. Use strong, unique passwords<br>6. Be cautious of phishing links in DMs";
+                } else if (message.toLowerCase().includes('what') && message.toLowerCase().includes('threat') && message.toLowerCase().includes('whatsapp')) {
+                    response = "Common WhatsApp threats include:<br>- Phishing links in messages<br>- Fake verification code scams<br>- Account takeover attempts<br>- Malicious file attachments<br>- Impersonation of contacts<br>ChainGuard can detect and block these threats in real-time.";
+                } else if (message.toLowerCase().includes('scan')) {
+                    response = "To scan a social media profile, go to the Scan Profiles page and enter the URL or username of the profile you want to analyze. Our AI will check for impersonation, data exposure, phishing links, and other security issues.";
+                    showPage('scan');
+                } else if (message.toLowerCase().includes('pricing') || message.toLowerCase().includes('plan')) {
+                    response = "We offer several pricing plans based on the number of social accounts you need to protect:<br>- Basic: ₹699/month for 3 accounts<br>- Professional: ₹1,999/3 months for 10 accounts<br>- Business: ₹3,899/6 months for 25 accounts<br>- Enterprise: ₹7,699/year for 50+ accounts";
+                } else if (message.toLowerCase().includes('facebook') || message.toLowerCase().includes('twitter') || message.toLowerCase().includes('telegram')) {
+                    response = `For ${message.toLowerCase().includes('facebook') ? 'Facebook' : message.toLowerCase().includes('twitter') ? 'X (Twitter)' : 'Telegram'} security, I recommend:<br>1. Review privacy settings regularly<br>2. Be cautious of friend/follow requests from unknown accounts<br>3. Don't click suspicious links<br>4. Use two-factor authentication<br>5. Monitor login activity<br>Would you like specific advice for this platform?`;
+                }
+                
+                sendChatMessage(response, false);
+                
+                // Add suggestions if needed
+                if (message.toLowerCase().includes('scan')) {
+                    setTimeout(() => {
+                        const suggestionElement = document.createElement('div');
+                        suggestionElement.className = 'suggestion';
+                        suggestionElement.innerHTML = `<i class="fas fa-lightbulb"></i> Scan a profile now`;
+                        suggestionElement.dataset.message = "Scan my social profile";
+                        
+                        const lastMessage = chatMessages.lastElementChild.querySelector('.message-content');
+                        lastMessage.appendChild(suggestionElement);
+                        
+                        suggestionElement.addEventListener('click', () => {
+                            chatInput.value = "Scan my social profile";
+                            sendChatMessage("Scan my social profile", true);
+                            simulateAIResponse("Scan my social profile");
+                        });
+                    }, 300);
+                } else if (message.toLowerCase().includes('pricing')) {
+                    setTimeout(() => {
+                        const suggestionElement = document.createElement('div');
+                        suggestionElement.className = 'suggestion';
+                        suggestionElement.innerHTML = `<i class="fas fa-lightbulb"></i> View pricing plans`;
+                        suggestionElement.dataset.message = "Show me pricing";
+                        
+                        const lastMessage = chatMessages.lastElementChild.querySelector('.message-content');
+                        lastMessage.appendChild(suggestionElement);
+                        
+                        suggestionElement.addEventListener('click', () => {
+                            chatInput.value = "Show me pricing";
+                            sendChatMessage("Show me pricing", true);
+                            simulateAIResponse("Show me pricing");
+                            scrollToSection('pricing');
+                        });
+                    }, 300);
+                }
+            }, 1500 + Math.random() * 1000);
+        }
+        
+        // Send button click
+        sendMessage.addEventListener('click', () => {
+            const message = chatInput.value.trim();
+            if (message) {
+                sendChatMessage(message, true);
+                chatInput.value = '';
+                simulateAIResponse(message);
+            }
+        });
+        
+        // Enter key in chat input
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage.click();
+            }
+        });
+        
+        // Suggestion click
+        suggestions.forEach(suggestion => {
+            suggestion.addEventListener('click', () => {
+                const message = suggestion.dataset.message;
+                sendChatMessage(message, true);
+                simulateAIResponse(message);
+            });
+        });
+        
+        // Initial message
+        setTimeout(() => {
+            sendChatMessage("Welcome! I'm your AI security assistant. Ask me about securing WhatsApp, Instagram, Facebook, Twitter, or any other social media platform.", false);
+        }, 1000);
+        
+        // Initialize the page with some sample notifications
+        setTimeout(() => {
+            showNotification("System Update", "ChainGuard Sentinel v2.1 deployed with enhanced social media threat detection");
+            showNotification("Security Alert", "New phishing campaign targeting WhatsApp users detected");
+            showNotification("Welcome to ChainGuard", "Your social media accounts are now being protected by our AI security system");
+        }, 2000);
+        
+        // Add event listeners for plan buttons
+        document.querySelectorAll('.plan-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const planCard = this.closest('.plan-card');
+                const planName = planCard.querySelector('.plan-name').textContent;
+                const planPrice = planCard.querySelector('.plan-price').textContent;
+                
+                showNotification(
+                    "Plan Selected", 
+                    `You've selected the ${planName} plan for ${planPrice}. You'll be redirected to the checkout page.`
+                );
+                
+                // In a real implementation, this would redirect to a checkout page
+                setTimeout(() => {
+                    showPage('signup');
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
